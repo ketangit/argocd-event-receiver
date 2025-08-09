@@ -1,0 +1,6 @@
+apiVersion: v2
+name: receiver-chart
+description: Deploys a Spring Boot Argo CD webhook receiver and optionally its Argo CD Application
+type: application
+version: 0.2.0
+appVersion: "1.0.0"

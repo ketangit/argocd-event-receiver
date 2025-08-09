@@ -1,0 +1,21 @@
+create end-to-end Argo CD sync notifications service in java using Spring Boot 3.x which uses ArgoCD post sync hooks to persists success and failure sync events to PostgreSQL
+enrich the sync success webhook with details about Docker images that were added, changed or removed. Include image url, name and tag for all updated, deleted & added new
+generate the code using latest version of Spring Boot 3.x and PostgreSQL
+package io.ketan.events;
+artifcat name = argocd-events-receiver
+craete Makefile to build the application
+create a Java class to handle the ArgoCD post sync webhook events
+create a Java class to handle the PostgreSQL database connection and operations
+create a Java class to handle the enrichment of sync success webhook with Docker image details
+create a Java class to handle the persistence of sync events to PostgreSQL
+create a Java class to handle the configuration of the application
+create a Dockerfile to build the application
+create a docker-compose file to run the application with PostgreSQL
+create a README.md file with instructions on how to build & run the application, and how to configure ArgoCD to use the post sync hooks
+generate all kubernetes manifests required to deploy the application including deployment, service, configmap, secret, and ingress
+create a test class to test the application
+create a test class to test the PostgreSQL database connection and operations
+create a test class to test the enrichment of sync success webhook with Docker image details
+create a test class to test the persistence of sync events to PostgreSQL
+create a test class to test the configuration of the application
+create a test class to test the ArgoCD post sync webhook events handler

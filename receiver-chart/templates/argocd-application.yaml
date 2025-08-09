@@ -1,0 +1,25 @@
+{{- if .Values.argocd.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ include "argocd-webhook-receiver.name" . }}
+  namespace: argocd
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.argocd.repoURL }}
+    targetRevision: {{ .Values.argocd.targetRevision }}
+    path: {{ .Values.argocd.path }}
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: {{ .Values.argocd.destination.server }}
+    namespace: {{ .Values.argocd.destination.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+{{- end }}

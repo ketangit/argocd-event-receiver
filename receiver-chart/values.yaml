@@ -1,0 +1,47 @@
+replicaCount: 1
+
+image:
+  repository: ketan/argocd-webhook-receiver
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: webhook.example.com
+      paths:
+        - path: /webhook/argocd
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+env:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/webhooks
+  SPRING_DATASOURCE_USERNAME: webhook_user
+  SPRING_DATASOURCE_PASSWORD: secret
+
+config:
+  LOG_LEVEL: INFO
+
+argocd:
+  enabled: true
+  project: webhook-project
+  repoURL: https://github.com/your-org/argocd-webhook-receiver.git
+  targetRevision: main
+  path: charts/argocd-webhook-receiver
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: webhooks

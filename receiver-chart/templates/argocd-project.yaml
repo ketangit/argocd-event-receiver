@@ -1,0 +1,17 @@
+{{- if .Values.argocd.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.argocd.project }}
+  namespace: argocd
+spec:
+  description: Argo CD project for webhook receiver
+  sourceRepos:
+    - {{ .Values.argocd.repoURL }}
+  destinations:
+    - namespace: {{ .Values.argocd.destination.namespace }}
+      server: {{ .Values.argocd.destination.server }}
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+{{- end }}
