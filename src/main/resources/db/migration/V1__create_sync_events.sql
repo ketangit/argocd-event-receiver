@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS sync_events (
   target_revision VARCHAR(255),
   dest_server TEXT,
   dest_namespace VARCHAR(255),
-  finished_at TIMESTAMPTZ NOT NULL,
-  received_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  images_added JSONB,
-  images_updated JSONB,
-  images_deleted JSONB
+  finished_at TIMESTAMP NOT NULL,
+  received_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  images_added TEXT,
+  images_updated TEXT,
+  images_deleted TEXT
 );

@@ -1,12 +1,15 @@
 APP_NAME=argocd-events-receiver
-VERSION=1.0.0
+VERSION=0.0.1-SNAPSHOT
 IMAGE=your-registry/$(APP_NAME):$(VERSION)
 
 build:
 	mvn clean package -DskipTests
 
 run:
-	java -jar target/$(APP_NAME)-$(VERSION).jar
+	SPRING_PROFILES_ACTIVE=local java -jar target/$(APP_NAME)-$(VERSION).jar
+
+test:
+	mvn test
 
 docker-build:
 	docker build -t $(IMAGE) .

@@ -27,15 +27,15 @@ public class WebhookController {
             @RequestHeader(value = "X-Token", required = false) String token,
             @RequestBody ArgoCdEventPayload payload
     ) {
-        // if (!eventService.isTokenValid(token)) {
-        //     log.warn("Unauthorized webhook attempt for app: {}", payload.getAppName());
-        //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        // }
+        if (!eventService.isTokenValid(token)) {
+            log.warn("Unauthorized webhook attempt for app: {}", payload.getAppName());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+        }
 
-        // List<ContainerImage> images = payload.getImages() != null ? payload.getImages() : List.of();
-        // SyncEvent saved = eventService.persistEvent(payload, images);
+        List<ContainerImage> images = payload.getImages() != null ? payload.getImages() : List.of();
+        SyncEvent saved = eventService.persistEvent(payload, images);
 
-        // log.info("Stored sync event for app: {}, revision: {}", saved.getAppName(), saved.getRevision());
+        log.info("Stored sync event for app: {}, revision: {}", saved.getAppName(), saved.getRevision());
         return ResponseEntity.ok("Event stored");
     }
 }

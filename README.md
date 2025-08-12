@@ -1,6 +1,6 @@
 # Argo CD Events Receiver
 
-A Spring Boot 3.x application that receives Argo CD sync notifications via webhook and stores metadata—including Docker image changes—in PostgreSQL.
+This service handles ArgoCD post-sync hooks to persist success and failure sync events to PostgreSQL. It enriches sync success webhooks with Docker image details.
 
 ## Features
 
@@ -11,37 +11,45 @@ A Spring Boot 3.x application that receives Argo CD sync notifications via webho
 - Flyway-managed schema
 - Kubernetes-ready deployment
 
-## Setup
 
-### 1. Build & Run Locally
-
+### Build the Application
 ```bash
 make build
+```
+
+### Run the Application
+```bash
 make run
 ```
-# argocd-event-receiver
-Argo CD sync notifications
 
 
-1. Build the JAR
-cd argocd-events-receiver
-mvn clean package
+### Test the Application
+```bash
+make test
+```
 
-2. Build Docker image
-make docker-build
-make docker-run
 
-3. Push and deploy to Kubernetes
+## Configure ArgoCD
+To configure ArgoCD to use post-sync hooks, add the following to your ArgoCD application manifest:
+```yaml
+hooks:
+  - type: PostSync
+    command: ["curl"]
+    args: ["-X", "POST", "http://<service-url>/webhook", "-d", "@sync-event.json"]
+```
+
+
+### Push and deploy to Kubernetes
+```bash
 kubectl apply -f k8s/secret.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f argocd-config/argocd-notifications-secret.yaml
 kubectl apply -f argocd-config/argocd-notifications-cm.yaml
+```
 
 
-
-3. Annotate Argo CD Applications
+### Annotate Argo CD Applications
 Add these annotations to each Application you want to monitor:
-
 ```yaml
 metadata:
   annotations:
@@ -49,9 +57,10 @@ metadata:
     notifications.argoproj.io/subscribe.on-sync-failed.webhook.spring-receiver: ""
 ```
 
-4. Optional: PostSync Hook to send image metadata
-You can define a Job like this in your app repo
 
+### Optional: PostSync Hook to send image metadata
+You can define a Job like this in your app repo
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -70,3 +79,4 @@ spec:
           value: http://argocd-events-receiver.default.svc:8080/webhook/images
         command: ["node", "collect-and-send.js"]
       restartPolicy: Never
+```

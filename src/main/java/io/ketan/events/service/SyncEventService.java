@@ -6,6 +6,7 @@ import io.ketan.events.model.ContainerImage;
 import io.ketan.events.repository.SyncEventRepository;
 import io.ketan.events.webhook.ArgoCdEventPayload;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,8 +19,17 @@ public class SyncEventService {
 
     private final SyncEventRepository repository;
 
+    @Value("${webhook.token}")
+    private String validToken;
+
     public SyncEvent saveFromPayload(ArgoCdEventPayload payload) {
         SyncEvent event = mapPayloadToEntity(payload);
+        return repository.save(event);
+    }
+
+    public SyncEvent persistEvent(ArgoCdEventPayload payload, List<ContainerImage> images) {
+        SyncEvent event = mapPayloadToEntity(payload);
+        event.setImages(images);
         return repository.save(event);
     }
 
@@ -55,5 +65,9 @@ public class SyncEventService {
 
     private List<ContainerImage> mapImages(List<ContainerImage> images) {
         return images != null ? images : List.of();
+    }
+
+    public boolean isTokenValid(String token) {
+        return token != null && token.equals(validToken);
     }
 }

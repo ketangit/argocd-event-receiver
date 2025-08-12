@@ -9,7 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ContainerImage {
-
     private String url;
     private String name;
     private String tag;
