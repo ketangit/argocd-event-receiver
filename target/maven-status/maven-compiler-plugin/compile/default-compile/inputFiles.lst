@@ -1,8 +1,0 @@
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/EventsReceiverApplication.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/converter/JsonbConverter.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/model/ContainerImage.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/model/SyncEvent.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/repository/SyncEventRepository.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/service/SyncEventService.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/webhook/ArgoCdEventPayload.java
-/workspaces/argocd-event-receiver/src/main/java/io/ketan/events/webhook/WebhookController.java
